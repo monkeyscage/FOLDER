@@ -11,12 +11,14 @@ address public controller;        //can be used as secondary admin
 string standard="ETHFOLDER.1.0";  //the blog standard
 uint public EEcount;              // the amount of EE (Ethereum Entities) registered
 uint public totExposed;           //the amount of EE exposed by the log
+bool public isOpen;
  
 //creation
 function UniversalFolder(address setOwner) {
 owner=setOwner;
 EEcount=1;
 totExposed=1;
+isOpen=false;
 logs.push(log(o,0,1));
 }
 
@@ -24,6 +26,13 @@ logs.push(log(o,0,1));
 function manager(address newOwner)returns(bool){
 if(msg.sender!=owner)throw;
 owner=newOwner;
+return true;
+}
+
+//open-close Folder (so anyone can drop any EE inside)
+function openFolder(bool open)returns(bool){
+if((msg.sender!=owner)&&(msg.sender!=controller))throw;
+isOpen=open;
 return true;
 }
 
@@ -35,14 +44,14 @@ return true;
 }
  
 //add a new EE at the end of the log
+//if the folder is open anyone can do it
 function addEntity(address EE) returns(bool){
-if((msg.sender!=owner)&&(msg.sender!=controller))throw;
+if(!isOpen){if((msg.sender!=owner)&&(msg.sender!=controller))throw;}
 logs.push(log(EE,EEcount-1,EEcount+1));
 EEcount++;
 totExposed++;
 return true;
 }
-
 
 
 //delete a specific EE at a given index
@@ -55,6 +64,7 @@ totExposed--;
 return true;
 }
  
+ 
 //read the logs by index
 //this is the standard BLOCKLOG call
 //returns a custom output specifying the index of the next Exposed EE on the sequence
@@ -62,6 +72,7 @@ function readLog(uint i)constant returns(uint,address,uint,uint,uint){
 log l=logs[i];
 return(logs.length,l.EE,l.prev,l.next,totExposed);
 }
+
 
 //the logs container
 log[] logs;
