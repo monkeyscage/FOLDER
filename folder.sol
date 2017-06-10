@@ -4,6 +4,7 @@ contract UniversalFolder{
 //Entities are listed at a given position,
 //they can be deleted and the hole is removed,
 //reconnecting the prev and next exposed entities on the sequence
+//All previous EE remains in the logs and can be accessed by index
 
 address public owner;             //standard needed for Alpha Layer and generic augmentation
 string standard="ETHFOLDER.1.0";  //the blog standard
@@ -55,6 +56,7 @@ return true;
  
 //read the logs by index
 //this is the standard BLOCKLOG call
+//returns a custom output specifying the index of the next Exposed EE on the sequence
 function readLog(uint i)constant returns(uint,address,uint,uint,uint){
 log l=logs[i];
 return(logs.length,l.EE,l.prev,l.next,totExposed);
