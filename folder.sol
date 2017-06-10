@@ -1,5 +1,10 @@
 contract UniversalFolder{
 
+//this folder content is organized by a tree
+//Entities are listed at a given position,
+//they can be deleted and the hole is removed,
+//reconnecting the prev and next exposed entities on the sequence
+
 address public owner;             //standard needed for Alpha Layer and generic augmentation
 string standard="ETHFOLDER.1.0";  //the blog standard
 uint public EEcount;              // the amount of EE (Ethereum Entities) registered
@@ -49,6 +54,7 @@ return true;
 }
  
 //read the logs by index
+//this is the standard BLOCKLOG call
 function readLog(uint i)constant returns(uint,address,uint,uint,uint){
 log l=logs[i];
 return(logs.length,l.EE,l.prev,l.next,totExposed);
