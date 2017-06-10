@@ -38,7 +38,7 @@ return true;
 
 
 
-//delete a specific post at a given index
+//delete a specific EE at a given index
 function deleteEE(uint index) returns(bool){
 if((msg.sender!=owner)&&(msg.sender!=controller))throw;
 log l=logs[index];
