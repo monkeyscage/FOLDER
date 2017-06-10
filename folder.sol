@@ -6,7 +6,8 @@ contract UniversalFolder{
 //reconnecting the prev and next exposed entities on the sequence
 //All previous EE remains in the logs and can be accessed by index
 
-address public owner;             //standard needed for Alpha Layer and generic augmentation
+address public owner;
+address public controller;        //can be used as secondary admin
 string standard="ETHFOLDER.1.0";  //the blog standard
 uint public EEcount;              // the amount of EE (Ethereum Entities) registered
 uint public totExposed;           //the amount of EE exposed by the log
@@ -27,9 +28,9 @@ return true;
 }
 
 //change owner
-function setController(address o)returns(bool){
+function setController(address newController)returns(bool){
 if(msg.sender!=owner)throw;
-controller=o;
+controller=newController;
 return true;
 }
  
@@ -74,7 +75,7 @@ string public logInterface="a-Log|u-PrevLog|u-NextLog|u-TotExposed";
    }
  
  
-//destroy box
+//destroy folder
 function kill(){
 if (msg.sender != owner)throw;
 selfdestruct(owner);
