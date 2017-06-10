@@ -1,22 +1,22 @@
 contract UniversalFolder{
-address public owner; //standard needed for Alpha Layer and generic augmentation
 
+address public owner;             //standard needed for Alpha Layer and generic augmentation
 string standard="ETHFOLDER.1.0";  //the blog standard
-uint public EEcount;
-uint public totExposed;
+uint public EEcount;              // the amount of EE (Ethereum Entities) registered
+uint public totExposed;           //the amount of EE exposed by the log
  
 //creation
-function UniversalFolder(address o) {
-owner=o;
+function UniversalFolder(address setOwner) {
+owner=setOwner;
 EEcount=1;
 totExposed=1;
 logs.push(log(o,0,1));
 }
 
 //change owner
-function manager(address o)returns(bool){
+function manager(address newOwner)returns(bool){
 if(msg.sender!=owner)throw;
-owner=o;
+owner=newOwner;
 return true;
 }
 
